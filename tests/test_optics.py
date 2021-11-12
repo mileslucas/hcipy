@@ -645,29 +645,12 @@ def test_thin_lens():
 	aperture = evaluate_supersampled( circular_aperture(5e-2), grid, 8 )
 	assert abs((lens.focal_length - focal_length)/focal_length) < 1e-10
 
-	nsteps = 20
-	dz = focal_length / (nsteps/2)
-	z = np.arange(nsteps+1) * dz
-	prop = FresnelPropagator(grid, dz)
-
-	wf = Wavefront(aperture, wavelength)
-	wf.total_power = 1
-	wf = lens(wf)
-
-	peak = [wf.power.max(),]
-	for i in range(nsteps):
-		wf = prop(wf)
-		peak.append(wf.power.max())
-
-	print('z', z)
-	print('peak', peak)
-
-	lens.focal_length = 2.0 * focal_length
+	lens.focal_length *= 2
 
 	nsteps = 20
-	dz = 2.0 * focal_length / (nsteps/2)
+	dz = 2 * focal_length / (nsteps/2)
 	z2 = np.arange(nsteps+1) * dz
-	prop = FresnelPropagator(grid, dz)
+	prop = AngularSpectrumPropagator(grid, dz)
 
 	wf = Wavefront(aperture, wavelength)
 	wf.total_power = 1
@@ -680,6 +663,25 @@ def test_thin_lens():
 
 	print('z2', z2)
 	print('peak2', peak2)
+
+	lens.focal_length = focal_length
+
+	nsteps = 20
+	dz = focal_length / (nsteps/2)
+	z = np.arange(nsteps+1) * dz
+	prop = AngularSpectrumPropagator(grid, dz)
+
+	wf = Wavefront(aperture, wavelength)
+	wf.total_power = 1
+	wf = lens(wf)
+
+	peak = [wf.power.max(),]
+	for i in range(nsteps):
+		wf = prop(wf)
+		peak.append(wf.power.max())
+
+	print('z', z)
+	print('peak', peak)
 
 	assert abs(z[np.argmax(peak)]/focal_length - 1.0) < 0.01
 	assert abs(z2[np.argmax(peak2)]/(2.0 * focal_length) - 1.0) < 0.01
