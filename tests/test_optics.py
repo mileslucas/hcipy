@@ -648,7 +648,7 @@ def test_thin_lens():
 	nsteps = 20
 	dz = focal_length / (nsteps/2)
 	z = np.arange(nsteps+1) * dz
-	prop = AngularSpectrumPropagator(grid, dz)
+	prop = FresnelPropagator(grid, dz)
 
 	wf = Wavefront(aperture, wavelength)
 	wf.total_power = 1
@@ -667,7 +667,7 @@ def test_thin_lens():
 	nsteps = 20
 	dz = 2.0 * focal_length / (nsteps/2)
 	z2 = np.arange(nsteps+1) * dz
-	prop = AngularSpectrumPropagator(grid, dz)
+	prop = FresnelPropagator(grid, dz)
 
 	wf = Wavefront(aperture, wavelength)
 	wf.total_power = 1
