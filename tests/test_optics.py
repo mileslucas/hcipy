@@ -650,6 +650,14 @@ def check_thin_lens(wf, lens, num_steps, focal_length):
 		z.append(z[-1] + dz)
 		peak.append(wavefront.power.max())
 
+	grid = wf.electric_field.grid
+	tf = prop.get_instance_data(grid, grid, wf.wavelength).fourier_filter._transfer_function
+
+	import warnings
+	warnings.warn(f'NaNs detected in peak: {peak} for focal length {focal_length}.')
+	warnings.warn(f'tf nans for {focal_length}? {not np.all(np.isfinite(tf))}.')
+	warnings.warn(f'transfer function: {tf}')
+
 	print('z', z)
 	print('peak', peak)
 
