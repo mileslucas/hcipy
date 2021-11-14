@@ -121,7 +121,16 @@ class FourierFilter(object):
 			kwargs = {'overwrite_x': self.cutout is not None and field.grid.ndim > 1}
 		else:
 			kwargs = {}
+
+		if not np.all(np.isfinite(f)):
+			import warnings
+			warnings.warn('Nans detected in f')
+
 		f = _fft_module.fftn(f, axes=tuple(range(-self.input_grid.ndim, 0)), **kwargs)
+
+		if not np.all(np.isfinite(f)):
+			import warnings
+			warnings.warn('Nans detected after fftn')
 
 		if (self._transfer_function.ndim - self.internal_grid.ndim) == 2:
 			# The transfer function is a matrix field.
@@ -144,11 +153,19 @@ class FourierFilter(object):
 
 			f *= tf
 
+		if not np.all(np.isfinite(f)):
+			import warnings
+			warnings.warn('Nans detected after multiplication with tf.')
+
 		if _use_mkl:
 			kwargs = {'overwrite_x': True}
 		else:
 			kwargs = {}
 		f = _fft_module.ifftn(f, axes=tuple(range(-self.input_grid.ndim, 0)), **kwargs)
+
+		if not np.all(np.isfinite(f)):
+			import warnings
+			warnings.warn('Nans detected after ifftn')
 
 		s = f.shape[:-self.internal_grid.ndim] + (-1,)
 		if self.cutout is None:
