@@ -655,6 +655,7 @@ def check_thin_lens(wf, lens, num_steps, focal_length):
 
 	return z, peak
 
+@pytest.mark.xfail
 def test_thin_lens():
 	wavelength = 1e-6
 	pupil_diameter = 5e-2
