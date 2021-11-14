@@ -687,7 +687,7 @@ def test_thin_lens():
 	assert abs(z2[np.argmax(peak2)]/(2.0 * focal_length) - 1.0) < 0.01
 	assert False
 
-def test_thin_lens():
+def test_thin_lens2():
 	wavelength = 1e-6
 	Dgrid = 1e-1
 	grid = make_pupil_grid(513, Dgrid)
