@@ -3,70 +3,70 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def test_optical_differentiation_wavefront_sensor():
-	pupil_grid = make_pupil_grid(128, 1)
-	wfs_grid = make_pupil_grid(256, 2)
-	amplitude_filter = make_polarization_odwfs_amplitude_filter(0.0)
+    pupil_grid = make_pupil_grid(128, 1)
+    wfs_grid = make_pupil_grid(256, 2)
+    amplitude_filter = make_polarization_odwfs_amplitude_filter(0.0)
 
-	odwfs = OpticalDifferentiationWavefrontSensorOptics(amplitude_filter, pupil_grid, wfs_grid)
+    odwfs = OpticalDifferentiationWavefrontSensorOptics(amplitude_filter, pupil_grid, wfs_grid)
 
-	zernike_modes = make_zernike_basis(20, 1, pupil_grid)
-	aberration = zernike_modes.linear_combination(np.random.randn(20)) * 0.1
+    zernike_modes = make_zernike_basis(20, 1, pupil_grid)
+    aberration = zernike_modes.linear_combination(np.random.randn(20)) * 0.1
 
-	wf = Wavefront(circular_aperture(1)(pupil_grid) * np.exp(1j * aberration))
-	img = odwfs(wf).intensity
+    wf = Wavefront(circular_aperture(1)(pupil_grid) * np.exp(1j * aberration))
+    img = odwfs(wf).intensity
 
 def test_pyramid_wavefront_sensor():
-	pupil_grid = make_pupil_grid(128)
-	wfs_grid = make_pupil_grid(256, 2)
+    pupil_grid = make_pupil_grid(128)
+    wfs_grid = make_pupil_grid(256, 2)
 
-	pywfs = PyramidWavefrontSensorOptics(pupil_grid, wfs_grid, 1.0)
+    pywfs = PyramidWavefrontSensorOptics(pupil_grid, wfs_grid, 1.0)
 
-	zernike_modes = make_zernike_basis(20, 1, pupil_grid)
-	aberration = zernike_modes.linear_combination(np.random.randn(20)) * 0.1
+    zernike_modes = make_zernike_basis(20, 1, pupil_grid)
+    aberration = zernike_modes.linear_combination(np.random.randn(20)) * 0.1
 
-	wf = Wavefront(circular_aperture(1)(pupil_grid) * np.exp(1j * aberration))
-	img = pywfs(wf).intensity
+    wf = Wavefront(circular_aperture(1)(pupil_grid) * np.exp(1j * aberration))
+    img = pywfs(wf).intensity
 
 def test_modulated_pyramid_wavefront_sensor():
-	pupil_grid = make_pupil_grid(128)
-	wfs_grid = make_pupil_grid(256, 2)
+    pupil_grid = make_pupil_grid(128)
+    wfs_grid = make_pupil_grid(256, 2)
 
-	pywfs = PyramidWavefrontSensorOptics(pupil_grid, wfs_grid, 1.0)
-	mpywfs = ModulatedPyramidWavefrontSensorOptics(pywfs, 2)
+    pywfs = PyramidWavefrontSensorOptics(pupil_grid, wfs_grid, 1.0)
+    mpywfs = ModulatedPyramidWavefrontSensorOptics(pywfs, 2)
 
-	zernike_modes = make_zernike_basis(20, 1, pupil_grid)
-	aberration = zernike_modes.linear_combination(np.random.randn(20)) * 0.1
+    zernike_modes = make_zernike_basis(20, 1, pupil_grid)
+    aberration = zernike_modes.linear_combination(np.random.randn(20)) * 0.1
 
-	wf = Wavefront(circular_aperture(1)(pupil_grid) * np.exp(1j * aberration))
-	imgs = mpywfs(wf)
-	img = np.sum([im.intensity for im in mpywfs(wf)], axis=0)
-	img = Field(img, imgs[0].grid)
+    wf = Wavefront(circular_aperture(1)(pupil_grid) * np.exp(1j * aberration))
+    imgs = mpywfs(wf)
+    img = np.sum([im.intensity for im in mpywfs(wf)], axis=0)
+    img = Field(img, imgs[0].grid)
 
 def test_zernike_wavefront_sensor():
-	pupil_grid = make_pupil_grid(128)
+    pupil_grid = make_pupil_grid(128)
 
-	zwfs = ZernikeWavefrontSensorOptics(pupil_grid)
+    zwfs = ZernikeWavefrontSensorOptics(pupil_grid)
 
-	zernike_modes = make_zernike_basis(20, 1, pupil_grid)
-	aberration = zernike_modes.linear_combination(np.random.randn(20)) * 0.1
+    zernike_modes = make_zernike_basis(20, 1, pupil_grid)
+    aberration = zernike_modes.linear_combination(np.random.randn(20)) * 0.1
 
-	wf = Wavefront(circular_aperture(1)(pupil_grid) * np.exp(1j * aberration))
-	img = zwfs(wf).intensity
+    wf = Wavefront(circular_aperture(1)(pupil_grid) * np.exp(1j * aberration))
+    img = zwfs(wf).intensity
 
 def test_vector_zernike_wavefront_sensor():
-	pupil_grid = make_pupil_grid(128)
+    pupil_grid = make_pupil_grid(128)
 
-	vzwfs = VectorZernikeWavefrontSensorOptics(pupil_grid)
+    vzwfs = VectorZernikeWavefrontSensorOptics(pupil_grid)
 
-	zwfs_plus = ZernikeWavefrontSensorOptics(pupil_grid, np.pi / 2)
-	zwfs_neg = ZernikeWavefrontSensorOptics(pupil_grid, -np.pi / 2)
+    zwfs_plus = ZernikeWavefrontSensorOptics(pupil_grid, np.pi / 2)
+    zwfs_neg = ZernikeWavefrontSensorOptics(pupil_grid, -np.pi / 2)
 
-	zernike_modes = make_zernike_basis(20, 1, pupil_grid)
-	aberration = zernike_modes.linear_combination(np.random.randn(20)) * 0.1
+    zernike_modes = make_zernike_basis(20, 1, pupil_grid)
+    aberration = zernike_modes.linear_combination(np.random.randn(20)) * 0.1
 
-	wf = Wavefront(circular_aperture(1)(pupil_grid) * np.exp(1j * aberration))
+    wf = Wavefront(circular_aperture(1)(pupil_grid) * np.exp(1j * aberration))
 
-	vector_img = vzwfs(wf).intensity
-	ref_img = (zwfs_plus(wf).intensity + zwfs_neg(wf).intensity) / 2
+    vector_img = vzwfs(wf).intensity
+    ref_img = (zwfs_plus(wf).intensity + zwfs_neg(wf).intensity) / 2
 
-	assert np.allclose(vector_img, ref_img)
+    assert np.allclose(vector_img, ref_img)

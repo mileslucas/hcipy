@@ -11,7 +11,7 @@ __all__ = [
     'make_actuator_positions',
     'make_gaussian_influence_functions',
     'make_xinetics_influence_functions',
-	'find_illuminated_actuators',
+    'find_illuminated_actuators',
     'DeformableMirror',
     'label_actuator_centroid_positions',
     'Detector',
@@ -31,7 +31,7 @@ __all__ = [
     'MicroLensArray',
     'closest_points',
     'OpticalElement',
-	'EmptyOpticalElement',
+    'EmptyOpticalElement',
     'AgnosticOpticalElement',
     'make_agnostic_forward',
     'make_agnostic_backward',
@@ -57,7 +57,7 @@ __all__ = [
     'TipTiltMirror',
     'SimpleVibration',
     'Wavefront',
-	'ThinLens'
+    'ThinLens'
 ]
 
 from .optical_element import *
